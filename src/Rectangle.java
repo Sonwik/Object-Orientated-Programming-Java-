@@ -1,6 +1,6 @@
-public class Rectangle{
+public class Rectangle {
 
-    public double width;
+    private double width;
     private double height;
     private int id;
     private static int idGen = 1;
@@ -10,6 +10,7 @@ public class Rectangle{
         this.height = 1.0;
         this.id = idGen++;
     }
+
     public Rectangle(double width, double height) {
         this();
         setWidth(width);
@@ -55,9 +56,13 @@ public class Rectangle{
                 '}';
     }
 
-    static void main() {
+    public static void main(String[] args) {
         Rectangle a = new Rectangle();
-        a.setHeight(34);
-        System.out.println(a.height);
+        System.out.println(a.toString());
+
+        Rectangle b = new Rectangle(5.0, 10.0);
+        System.out.println(b.toString());
+
+        System.out.println(b.area());
     }
 }

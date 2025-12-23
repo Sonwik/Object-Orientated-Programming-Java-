@@ -2,11 +2,13 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class LibraryApp {
+
     private ArrayList<Book> books = new ArrayList<>();
     private Scanner scanner = new Scanner(System.in);
 
     public void run() {
         boolean running = true;
+
         while (running) {
             System.out.println("\nWelcome to Library App!");
             System.out.println("1. Print all books");
@@ -44,7 +46,7 @@ public class LibraryApp {
                     System.out.println("Goodbye!");
                     break;
                 default:
-                    System.out.println("Invalid option, try again.");
+                    System.out.println("Invalid option.");
             }
         }
     }
@@ -54,37 +56,34 @@ public class LibraryApp {
             System.out.println("No books in the library");
         } else {
             for (Book b : books) {
-                System.out.println(b);
+                System.out.println(b.toString());
             }
         }
     }
 
     private void addNewBook() {
-        try {
-            System.out.print("Enter title: ");
-            String title = scanner.nextLine();
-            System.out.print("Enter author: ");
-            String author = scanner.nextLine();
-            System.out.print("Enter year: ");
-            int year = Integer.parseInt(scanner.nextLine());
+        System.out.print("Enter title: ");
+        String title = scanner.nextLine();
 
-            Book newBook = new Book(title, author, year);
-            books.add(newBook);
-            System.out.println("Book added successfully!");
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid number format for year.");
-        } catch (IllegalArgumentException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+        System.out.print("Enter author: ");
+        String author = scanner.nextLine();
+
+        System.out.print("Enter year: ");
+        int year = Integer.parseInt(scanner.nextLine());
+
+        Book newBook = new Book(title, author, year);
+        books.add(newBook);
+        System.out.println("Book added.");
     }
 
     private void searchBooksByTitle() {
-        System.out.print("Enter title part to search: ");
+        System.out.print("Enter title part: ");
         String query = scanner.nextLine().toLowerCase();
+
         boolean found = false;
         for (Book b : books) {
             if (b.getTitle().toLowerCase().contains(query)) {
-                System.out.println(b);
+                System.out.println(b.toString());
                 found = true;
             }
         }
@@ -94,56 +93,49 @@ public class LibraryApp {
     }
 
     private void borrowBook() {
-        System.out.print("Enter book ID to borrow: ");
-        try {
-            int id = Integer.parseInt(scanner.nextLine());
-            Book book = findBookById(id);
-            if (book != null) {
-                if (book.isAvailable()) {
-                    book.markAsBorrowed();
-                    System.out.println("You borrowed the book: " + book.getTitle());
-                } else {
-                    System.out.println("Book is already borrowed.");
-                }
+        System.out.print("Enter book ID: ");
+        int id = Integer.parseInt(scanner.nextLine());
+        Book book = findBookById(id);
+
+        if (book != null) {
+            if (book.isAvailable()) {
+                book.markAsBorrowed();
+                System.out.println("You borrowed the book.");
             } else {
-                System.out.println("Book not found.");
+                System.out.println("Book is already borrowed.");
             }
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid ID format.");
+        } else {
+            System.out.println("Book not found.");
         }
     }
 
     private void returnBook() {
-        System.out.print("Enter book ID to return: ");
-        try {
-            int id = Integer.parseInt(scanner.nextLine());
-            Book book = findBookById(id);
-            if (book != null && !book.isAvailable()) {
+        System.out.print("Enter book ID: ");
+        int id = Integer.parseInt(scanner.nextLine());
+        Book book = findBookById(id);
+
+        if (book != null) {
+            if (!book.isAvailable()) {
                 book.markAsReturned();
-                System.out.println("Book returned successfully.");
-            } else if (book != null && book.isAvailable()) {
-                System.out.println("This book is already in the library.");
+                System.out.println("Book returned.");
             } else {
-                System.out.println("Book not found.");
+                System.out.println("This book is already in the library.");
             }
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid ID format.");
+        } else {
+            System.out.println("Book not found.");
         }
     }
 
     private void deleteBookById() {
-        System.out.print("Enter book ID to delete: ");
-        try {
-            int id = Integer.parseInt(scanner.nextLine());
-            Book bookToRemove = findBookById(id);
-            if (bookToRemove != null) {
-                books.remove(bookToRemove);
-                System.out.println("Book deleted.");
-            } else {
-                System.out.println("Book not found.");
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid ID format.");
+        System.out.print("Enter book ID: ");
+        int id = Integer.parseInt(scanner.nextLine());
+        Book book = findBookById(id);
+
+        if (book != null) {
+            books.remove(book);
+            System.out.println("Book deleted.");
+        } else {
+            System.out.println("Book not found.");
         }
     }
 
@@ -155,7 +147,6 @@ public class LibraryApp {
         }
         return null;
     }
-
 
     public static void main(String[] args) {
         new LibraryApp().run();

@@ -1,6 +1,7 @@
 public class Book {
+
     private int id;
-    private static int idGen = 0;
+    private static int idGen = 1;
     private String title;
     private String author;
     private int year;
@@ -18,16 +19,12 @@ public class Book {
         setYear(year);
     }
 
-    public void markAsBorrowed() {
-        this.available = false;
-    }
-
-    public void markAsReturned() {
-        this.available = true;
-    }
-
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -35,9 +32,8 @@ public class Book {
     }
 
     public void setTitle(String title) {
-        // Простая проверка на пустоту
-        if (title.isEmpty()) {
-            throw new IllegalArgumentException("Empty title");
+        if (title == null || title.isEmpty()) {
+            throw new IllegalArgumentException("Title cannot be empty");
         }
         this.title = title;
     }
@@ -47,8 +43,8 @@ public class Book {
     }
 
     public void setAuthor(String author) {
-        if (author.isEmpty()) {
-            throw new IllegalArgumentException("Empty author");
+        if (author == null || author.isEmpty()) {
+            throw new IllegalArgumentException("Author cannot be empty");
         }
         this.author = author;
     }
@@ -59,7 +55,7 @@ public class Book {
 
     public void setYear(int year) {
         if (year < 1500 || year > 2025) {
-            throw new IllegalArgumentException("Bad year");
+            throw new IllegalArgumentException("Invalid year");
         }
         this.year = year;
     }
@@ -68,10 +64,34 @@ public class Book {
         return available;
     }
 
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
+
+    public void markAsBorrowed() {
+        this.available = false;
+    }
+
+    public void markAsReturned() {
+        this.available = true;
+    }
+
     @Override
     public String toString() {
-        return "Book [" + id + "]: " + title + " by " + author + " (" + year + ")";
+        return "Book{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", year=" + year +
+                ", available=" + available +
+                '}';
     }
+
     public static void main(String[] args) {
-        }
+        Book a = new Book("Java Programming", "John Doe", 2020);
+        System.out.println(a.toString());
+
+        a.markAsBorrowed();
+        System.out.println(a.toString());
+    }
 }
